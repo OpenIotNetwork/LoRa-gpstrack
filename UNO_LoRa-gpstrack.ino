@@ -7,8 +7,7 @@
 //       If you enable debug only output on SoftSerial is generated but no LoRa Tx will take place
 //
 //#define DEBUG_SS
-
-#ifdef DEBUG_SS 
+#ifdef DEBUG_SS
  #include <SoftwareSerial.h>
  // debug string for data send over LoRa
  String toLog;
@@ -16,11 +15,12 @@
  SoftwareSerial ss(3, 4);
 #endif
 
+// init TinyGPS
 TinyGPS gps;
 
-// Buffer for data transmitted with LoRa
+// Buffer data for LoRa packet transmission
 uint8_t txBuffer[9];
-// variables for GPS data we wanna transmitt
+// variables for GPS data we want to transmit
 uint8_t hdo_gps;
 uint16_t alt_gps;
 uint32_t lat_gps_b, lon_gps_b;
@@ -44,7 +44,6 @@ static osjob_t sendjob;
 const unsigned TX_INTERVAL = 60;
 const unsigned GPS_INTERVAL = 2;
 
-
 // Pin mapping Dragino Shield
 const lmic_pinmap lmic_pins = {
   .nss = 10,
@@ -53,7 +52,7 @@ const lmic_pinmap lmic_pins = {
   .dio = {2, 6, 7},
 };
 
-// catch LoRa TXCOMPLETE and restart GPS postions sending(do_send) after TX_INTERVAL
+// catch LoRa TXCOMPLETE and restart GPS postion sending(do_send) after TX_INTERVAL
 void onEvent (ev_t ev) {
   if (ev == EV_TXCOMPLETE) {
     #ifdef DEBUG_SS 
@@ -65,11 +64,10 @@ void onEvent (ev_t ev) {
 
 void do_send(osjob_t* j) {
   
-  unsigned long age =0;
+  unsigned long age = 0;
   float flat, flon;
   unsigned long fix_age;
   
-  //READ GPS DATA over Serial0 PIN0/1
   gpsdelay(1000);
     gps.f_get_position(&flat, &flon, &fix_age);
   
@@ -89,7 +87,7 @@ void do_send(osjob_t* j) {
    } 
   else if (fix_age < 5000){
     #ifdef DEBUG_SS
-      ss.print("Data is current. @"); ss.println(os_getTime());
+      ss.print("Data is fresh. @"); ss.println(os_getTime());
       ss.print("Age: ");ss.println(fix_age);
     #endif
     lat_gps_b = ((flat + 90) / 180) * 16777215;
@@ -160,26 +158,22 @@ static void gpsdelay(unsigned long ms)
 void setup() {
   Serial.begin(9600);
   #ifdef DEBUG_SS
-    ss.begin(9600); // SoftSerial port logging - take care not all speeds are suported on SoftSerial
+    ss.begin(9600); // port logging - not all speeds are suported on SoftSerial
     ss.print("STARTING");
   #endif
   os_init();
-
   LMIC_reset();
   LMIC_setSession (0x1, DEVADDR, NWKSKEY, APPSKEY);
-
   // Disable link check validation
   LMIC_setLinkCheckMode(0);
   // TTN uses SF9 for its RX2 window.
   LMIC.dn2Dr = DR_SF9;
   // disable channels not known to single channel gateways
-  //LMIC_disableChannel(1);    //disable channel 1 
-  //LMIC_disableChannel(2);    // disable channel 2*/
-  
+  // LMIC_disableChannel(0);  // uncomment to disable channel 0
+  // LMIC_disableChannel(1);  // uncomment to disable channel 1
+  // LMIC_disableChannel(2);  // uncomment to disable channel 2
   // Set data rate and transmit power for uplink (note: txpow seems to be ignored by the library)
-  //LMIC_setDrTxpow(DR_SF10, 14);
-  LMIC_setDrTxpow(DR_SF10, 20);
-
+  LMIC_setDrTxpow(DR_SF7, 14);
   // Start job
   do_send(&sendjob);
 }
@@ -187,5 +181,3 @@ void setup() {
 void loop() {
   os_runloop_once();
 }
-
-
