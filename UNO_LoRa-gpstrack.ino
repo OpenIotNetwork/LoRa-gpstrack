@@ -69,9 +69,8 @@ void do_send(osjob_t* j) {
   unsigned long fix_age;
   
   gpsdelay(1000);
-    gps.f_get_position(&flat, &flon, &fix_age);
+  gps.f_get_position(&flat, &flon, &fix_age);
   
-  delay(1000);
   if (fix_age == TinyGPS::GPS_INVALID_AGE) {
     #ifdef DEBUG_SS
       ss.print("No fix detected @ ");ss.println(os_getTime());
