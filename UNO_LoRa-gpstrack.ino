@@ -77,14 +77,14 @@ void do_send(osjob_t* j) {
     #endif
     os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(GPS_INTERVAL), do_send);
    } 
-  else if (fix_age > 5000) {
+  else if (fix_age > 1000) {
     #ifdef DEBUG_SS
       ss.print("Warning: possible stale data! @ ");ss.println(os_getTime());
       ss.print("Age: ");ss.println(fix_age);
     #endif
     os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(GPS_INTERVAL), do_send);
    } 
-  else if (fix_age < 5000){
+  else if (fix_age < 1000){
     #ifdef DEBUG_SS
       ss.print("Data is fresh. @"); ss.println(os_getTime());
       ss.print("Age: ");ss.println(fix_age);
