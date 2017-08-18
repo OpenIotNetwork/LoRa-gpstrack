@@ -52,7 +52,7 @@ const lmic_pinmap lmic_pins = {
   .dio = {2, 6, 7},
 };
 
-// catch LoRa TXCOMPLETE and restart GPS postion sending(do_send) after TX_INTERVAL
+// catch LoRa TXCOMPLETE and restart GPS position sending(do_send) after TX_INTERVAL
 void onEvent (ev_t ev) {
   if (ev == EV_TXCOMPLETE) {
     #ifdef DEBUG_SS 
