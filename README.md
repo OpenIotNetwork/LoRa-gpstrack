@@ -11,7 +11,7 @@ This application sends
  - altitude and
  - hdop
 
-as soon as a GPS fix is aquired. This data is sent continously using LMIC library. The device is powered by any source that fits to Arduino Uno. We use powerbanks for mobile phone charging. They run a sensor for weeks.
+as soon as a GPS fix is aquired. This data is sent continously using LMIC library. The device is powered by any source that fits to Arduino Uno. We use powerbanks for mobile phone charging. They can run a sensor for weeks.
 
 We use this tracker to measure the range of the LoRaWAN Gateways in our network. **The application's output format is compatible for use with [TTNmapper](http://ttnmapper.org).**
 
@@ -23,18 +23,20 @@ What you need:
  - Dragino LoRa GPS Shield
  - power source for powering Arduino
 
-Put together the pieces as described in the vendor's manual.
+Put together the hardware as described in the vendor's manual.
+
+Create an application in The Things Network Console and add a new device. Use ABP as activation method. Disable Frame Counter Checks.
 
 Change the 
  - NWKSKEY
  - APPSKEY
  - DEVADDR
 
-variable accordint to values of the device you created in the The Things Network Console.
+variable according to values of the device you created in the TTN Console.
 
 Program the application to your Arduino Uno. If you have problems while programming, try pressing the reset button of the Shield during programming.
 
-In The Things Network Console you use this code to decode uplink messages:
+In The Things Network Console you can use this code to decode uplink messages:
 
     function Decoder(bytes, port) {
         // Decode an uplink message from a buffer
@@ -61,7 +63,7 @@ In The Things Network Console you use this code to decode uplink messages:
 
 Optionally you can adjust these values:
 - TX_INTERVAL
-Set to define the pause time in seconds between transmissions. (Default is 60 to send one message per minute.)
+Defines the pause time in seconds between transmissions (default is 60. You can set it to 0 to get as many data as possible and use the maximum duty cycle allowed.)
  - GPS_INTERVAL
 poll interval of GPS DATA
  - lmic_pinmap
@@ -81,6 +83,9 @@ Debug mode enables debugging of the reception of GPS data via SoftSerial. On Ard
 ##### I get an error when trying to program the Arduino, what to do?
 Press the reset button of the Shield while programming.
 
+##### I only see packets received by the gateway but not in the application
+Check that you have disabled Frame Counter Checks in the device configuration of TTN Console.
+
 ##### I want to only transmit on one channel, is this possible?
 By default the LMIC library transmits on three default channels. You can disable the wanted channels by looking for these lines in the code:
         
@@ -88,8 +93,9 @@ By default the LMIC library transmits on three default channels. You can disable
     LMIC_disableChannel(1);  // uncomment to disable channel 1
     LMIC_disableChannel(2);  // uncomment to disable channel 2
 
-##### Can I use this code also with other boards?
+##### Can I use this code also with other LoRa boards?
 This should be possible. You will have to adjust the PIN mapping constant called lmic_pinmap. For GPS a serial port with 9600 baud is used.
 
 # Credits
 This script is based on the work by Thomas Telkamp, Matthijs Kooijman and Andreas Spiess.
+Thanks for ttnmapper application and code review to JP Meijers.
