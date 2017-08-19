@@ -34,6 +34,8 @@ Change the
 
 variable according to values of the device you created in the TTN Console.
 
+Please adjust the channel configuration if you use it outside EU.
+
 Program the application to your Arduino Uno. If you have problems while programming, try pressing the reset button of the Shield during programming.
 
 In The Things Network Console you can use this code to decode uplink messages:
@@ -72,6 +74,8 @@ PIN mapping if not using Dragino GPS LoRa Shield
 set Spreading Factor (SF7 -> SF12) and transmission power in dB
  - Debug Mode (DEBUG_SS)
 see chapter Debug Mode
+ - 8 channel operation
+by removing the comments from the channel definition you can use the 8 LoRaWAN channels for EU868 suggested by The Things Network.
 
 ### Debug mode
 Debug mode enables debugging of the reception of GPS data via SoftSerial. On Arduino Uno it is not possible to run debug mode and LoRa transmission at the same time due to memory restrictions. To enable debug mode define DEBUG_SS:
@@ -87,11 +91,20 @@ Press the reset button of the Shield while programming.
 Check that you have disabled Frame Counter Checks in the device configuration of TTN Console.
 
 ##### I want to only transmit on one channel, is this possible?
-By default the LMIC library transmits on three default channels. You can disable the wanted channels by looking for these lines in the code:
-        
-    LMIC_disableChannel(0);  // uncomment to disable channel 0
+The LoRa GPS tracker transmits on the 3 default channels of LMIC (EU868). You can disable the unwanted channels by looking for these lines in the code:
+
+    // disable channels not known to single channel gateways
     LMIC_disableChannel(1);  // uncomment to disable channel 1
     LMIC_disableChannel(2);  // uncomment to disable channel 2
+    [...]
+
+##### I want to transmit on all available channels, is this possible?
+The LoRa GPS tracker transmits on the 3 default channels of LMIC (EU868). You can remove the comments from the channel definition to enable additional channels:
+
+    // LMIC_setupChannel(0, 868100000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);
+    // LMIC_setupChannel(1, 868300000, DR_RANGE_MAP(DR_SF12, DR_SF7B), BAND_CENTI);
+    // LMIC_setupChannel(2, 868500000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);
+    [...]
 
 ##### Can I use this code also with other LoRa boards?
 This should be possible. You will have to adjust the PIN mapping constant called lmic_pinmap. For GPS a serial port with 9600 baud is used.
