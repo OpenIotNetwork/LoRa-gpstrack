@@ -163,6 +163,18 @@ void setup() {
   os_init();
   LMIC_reset();
   LMIC_setSession (0x1, DEVADDR, NWKSKEY, APPSKEY);
+  // Set up the channels used by the Things Network, which corresponds
+  // to the defaults of most gateways. Without this, only three base
+  // channels from the LoRaWAN specification are used
+  // LMIC_setupChannel(0, 868100000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);      // g-band
+  // LMIC_setupChannel(1, 868300000, DR_RANGE_MAP(DR_SF12, DR_SF7B), BAND_CENTI);      // g-band
+  // LMIC_setupChannel(2, 868500000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);      // g-band
+  // LMIC_setupChannel(3, 867100000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);      // g-band
+  // LMIC_setupChannel(4, 867300000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);      // g-band
+  // LMIC_setupChannel(5, 867500000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);      // g-band
+  // LMIC_setupChannel(6, 867700000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);      // g-band
+  // LMIC_setupChannel(7, 867900000, DR_RANGE_MAP(DR_SF12, DR_SF7),  BAND_CENTI);      // g-band
+  // LMIC_setupChannel(8, 868800000, DR_RANGE_MAP(DR_FSK, DR_FSK), BAND_MILLI);        // g2-band
   // Disable link check validation
   LMIC_setLinkCheckMode(0);
   // TTN uses SF9 for its RX2 window.
@@ -171,6 +183,12 @@ void setup() {
   // LMIC_disableChannel(0);  // uncomment to disable channel 0
   // LMIC_disableChannel(1);  // uncomment to disable channel 1
   // LMIC_disableChannel(2);  // uncomment to disable channel 2
+  // LMIC_disableChannel(3);  // uncomment to disable channel 3
+  // LMIC_disableChannel(4);  // uncomment to disable channel 4
+  // LMIC_disableChannel(5);  // uncomment to disable channel 5
+  // LMIC_disableChannel(6);  // uncomment to disable channel 6
+  // LMIC_disableChannel(7);  // uncomment to disable channel 7
+  // LMIC_disableChannel(8);  // uncomment to disable channel 8
   // Set data rate and transmit power for uplink (note: txpow seems to be ignored by the library)
   LMIC_setDrTxpow(DR_SF7, 14);
   // Start job
