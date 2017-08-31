@@ -103,7 +103,7 @@ void do_send(osjob_t* j) {
     txBuffer[6] = ( alt_gps >> 8 ) & 0xFF;
     txBuffer[7] = alt_gps & 0xFF;
   
-    hdo_gps = gps.hdop()*10;
+    hdo_gps = gps.hdop()/10;
     txBuffer[8] = hdo_gps & 0xFF;
     #ifdef DEBUG_SS
       toLog = "";
