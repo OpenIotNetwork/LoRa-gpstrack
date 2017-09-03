@@ -73,7 +73,7 @@ PIN mapping matches Dragino LoRa GPS shield. Adjust if your are using a differen
  - LMIC_setDrTxpow
 Spreading Factor (SF7 -> SF12) and transmission power in dB
  - Debug Mode (DEBUG_SS)
-see chapter [Debug mode](#Debug-mode)
+see chapter [Debug mode](#debug-mode)
  - channel operation
 by removing the comments from the channel definition you can use all LoRaWAN channels for EU868 suggested by The Things Network.
 
