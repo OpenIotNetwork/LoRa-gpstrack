@@ -1,19 +1,19 @@
 # LoRa-gpstrack
 
-A **LoRa GPS tracker** sensor for 
+A **LoRa GPS tracker** sensor based on 
  - Arduino Uno and 
  - Dragino LoRa GPS Shield
 
 for use in LoRaWAN networks.
 
-This application sends
+This application transmits
  - current GPS position,
  - altitude and
  - hdop
 
-as soon as a GPS fix is aquired. This data is sent continously using LMIC library. The device is powered by any source that fits to Arduino Uno. We use powerbanks for mobile phone charging. They can run a sensor for weeks.
+as soon as a GPS fix is aquired. This data is sent continously using LMIC library. The device is powered by any source that fits to Arduino Uno.
 
-We use this tracker to measure the range of the LoRaWAN Gateways in our network. **The application's output format is compatible for use with [TTNmapper](http://ttnmapper.org).**
+We use this tracker to measure the range of the LoRaWAN Gateways in our network. **The application's output format is compatible for use with [TTN Mapper](http://ttnmapper.org).**
 
 It might suite for any other GPS tracking use case as well. We just included to the values we required but it can easily be extended to more values. Keep in mind that more data means longer transmission times and duty cycles, especially on high spreading factors.
 
@@ -32,9 +32,9 @@ Change the
  - APPSKEY
  - DEVADDR
 
-variable according to values of the device you created in the TTN Console.
+values in the code according to match the device details you just created in the TTN Console.
 
-Please adjust the channel configuration if you use it outside EU.
+Adjust the channel configuration if you use it outside EU.
 
 Program the application to your Arduino Uno. If you have problems while programming, try pressing the reset button of the Shield during programming.
 
@@ -69,18 +69,23 @@ Defines the pause time in seconds between transmissions (default is 60. You can 
  - GPS_INTERVAL
 poll interval of GPS DATA
  - lmic_pinmap
-PIN mapping if not using Dragino GPS LoRa Shield
+PIN mapping matches Dragino LoRa GPS shield. Adjust if your are using a different shield.
  - LMIC_setDrTxpow
-set Spreading Factor (SF7 -> SF12) and transmission power in dB
+Spreading Factor (SF7 -> SF12) and transmission power in dB
  - Debug Mode (DEBUG_SS)
-see chapter Debug Mode
- - 8 channel operation
-by removing the comments from the channel definition you can use the 8 LoRaWAN channels for EU868 suggested by The Things Network.
+see chapter [Debug mode](#Debug-mode)
+ - channel operation
+by removing the comments from the channel definition you can use all LoRaWAN channels for EU868 suggested by The Things Network.
 
 ### Debug mode
 Debug mode enables debugging of the reception of GPS data via SoftSerial. On Arduino Uno it is not possible to run debug mode and LoRa transmission at the same time due to memory restrictions. To enable debug mode define DEBUG_SS:
 
     #define DEBUG_SS
+
+## Integration to ttnmapper.org
+Create an Access Key for TTN Mapper in your TTN application. Send a message to the owner of TTN Mapper including your application name and access key. You find the details in the Contact menu at http://ttnmapper.org.
+
+As soon as you get confirmation your data will automatically show up.
 
 # FAQ & known problems
 
